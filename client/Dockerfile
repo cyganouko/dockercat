@@ -1,18 +1,21 @@
-FROM node:16-alpine
+# Stage 1: Build
+FROM node:18-alpine AS build
 
 WORKDIR /app
 
 COPY package*.json ./
-
-RUN npm config set fetch-retry-maxtimeout 600000 \
- && npm config set fetch-retry-mintimeout 20000 \
- && npm config set fetch-timeout 600000 \
- && npm install --legacy-peer-deps
+RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+RUN npm run build
 
-ENV HOST=0.0.0.0
 
-CMD ["npm","start"]
+# Stage 2: Serve (lightweight)
+FROM nginx:alpine
+
+COPY --from=build /app/build /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
