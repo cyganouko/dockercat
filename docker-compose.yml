@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   mongodb:
     image: mongo:7
@@ -21,7 +19,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - MONGODB_URI=mongodb://mongodb:27017/yolomy
+      MONGODB_URI: mongodb://mongodb:27017/yolomy
     depends_on:
       - mongodb
     networks:
@@ -35,6 +33,12 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
+    environment:
+      HOST: 0.0.0.0
+      CHOKIDAR_USEPOLLING: "true"
+      WDS_SOCKET_PORT: 0
+    stdin_open: true
+    tty: true
     depends_on:
       - backend
     networks:
