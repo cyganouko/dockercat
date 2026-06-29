@@ -3,7 +3,7 @@ version: "3.8"
 services:
   mongo:
     image: mongo:7
-    container_name: mongo_db
+    container_name: yolo-mongodb
     restart: always
     ports:
       - "27017:27017"
@@ -17,7 +17,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - MONGO_URI=mongodb://mongo:27017/ecommerce
+      - MONGODB_URI=mongodb://mongo:27017/yolomy
     depends_on:
       - mongo
     command: node server.js
