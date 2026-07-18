@@ -1,0 +1,27 @@
+
+
+- name: Prepare application deployment
+  block:
+    - name: Remove previous application directory
+      ansible.builtin.file:
+        path: "{{ app_directory }}"
+        state: absent
+
+    - name: Clone Dockercat application from GitHub
+      ansible.builtin.git:
+        repo: "{{ github_repo }}"
+        dest: "{{ app_directory }}"
+        version: "{{ github_branch }}"
+        force: true
+
+    - name: Set application directory ownership
+      ansible.builtin.file:
+        path: "{{ app_directory }}"
+        owner: vagrant
+        group: vagrant
+        recurse: true
+
+  tags:
+    - application
+    - deployment
+
