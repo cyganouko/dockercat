@@ -1,17 +1,17 @@
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/focal64"
+  config.vm.box = "ubuntu/jammy64"
 
   # Forward the React/Nginx frontend port
   config.vm.network "forwarded_port",
                     guest: 3000,
-                    host: 3000,
+                    host: 3001,
                     host_ip: "127.0.0.1"
 
   # Forward the backend API port
   config.vm.network "forwarded_port",
                     guest: 5000,
-                    host: 5000,
+                    host: 5001,
                     host_ip: "127.0.0.1"
 
   # VirtualBox configuration
