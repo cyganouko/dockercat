@@ -1,0 +1,38 @@
+
+
+
+- name: Deploy Dockerized Dockercat E-Commerce Application
+  hosts: all
+  become: true
+  gather_facts: true
+
+  vars_files:
+    - group_vars/all.yml
+
+  pre_tasks:
+    - name: Display deployment information
+      ansible.builtin.debug:
+        msg:
+          - "Starting Dockercat deployment"
+          - "Target host: {{ inventory_hostname }}"
+          - "Application directory: {{ app_directory }}"
+      tags:
+        - always
+
+  roles:
+    - role: docker
+      tags:
+        - docker
+        - setup
+
+    - role: application
+      tags:
+        - application
+        - setup
+
+    - role: containers
+      tags:
+        - containers
+        - deploy
+
+
