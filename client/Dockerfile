@@ -1,4 +1,4 @@
-FROM node:18-alpine AS build
+FROM node:13.12.0-alpine AS build
 
 WORKDIR /app
 
@@ -6,7 +6,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-RUN NODE_OPTIONS=--openssl-legacy-provider npm run build
+RUN npm run build
 
 
 FROM nginx:alpine
