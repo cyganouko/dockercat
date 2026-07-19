@@ -73,11 +73,18 @@ resource "aws_instance" "dockercat" {
     Environment = "Stage2"
   }
 
-  provisioner "local-exec" {
-    command = <<-EOT
-      echo "Waiting for EC2 instance SSH to become available..."
-      sleep 30
-    EOT
+  connection {
+    type        = "ssh"
+    host        = self.public_ip
+    user        = "ubuntu"
+    private_key = file(var.ssh_private_key_path)
+    timeout     = "5m"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "echo 'EC2 instance SSH connection successful'"
+    ]
   }
 
   provisioner "local-exec" {
