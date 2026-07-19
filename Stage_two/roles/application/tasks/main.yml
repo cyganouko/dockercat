@@ -1,0 +1,28 @@
+
+- name: Prepare Dockercat application
+  block:
+    - name: Create application directory
+      ansible.builtin.file:
+        path: "{{ app_directory }}"
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: "0755"
+
+    - name: Clone Dockercat from GitHub
+      ansible.builtin.git:
+        repo: "{{ github_repo }}"
+        dest: "{{ app_directory }}"
+        version: "{{ github_branch }}"
+        force: true
+
+    - name: Set application ownership
+      ansible.builtin.file:
+        path: "{{ app_directory }}"
+        owner: ubuntu
+        group: ubuntu
+        recurse: true
+
+  tags:
+    - application
+    - deployment

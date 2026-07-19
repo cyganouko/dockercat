@@ -1,0 +1,36 @@
+
+- name: Configure and Deploy Dockercat Stage 2
+  hosts: all
+  become: true
+  gather_facts: true
+
+  vars_files:
+    - group_vars/all.yml
+
+  pre_tasks:
+    - name: Display Stage 2 deployment information
+      ansible.builtin.debug:
+        msg:
+          - "Starting Dockercat Stage 2 deployment"
+          - "Target host: {{ inventory_hostname }}"
+          - "Application directory: {{ app_directory }}"
+          - "Frontend port: {{ frontend_port }}"
+          - "Backend port: {{ backend_port }}"
+      tags:
+        - always
+
+  roles:
+    - role: docker
+      tags:
+        - docker
+        - setup
+
+    - role: application
+      tags:
+        - application
+        - setup
+
+    - role: containers
+      tags:
+        - containers
+        - deploy

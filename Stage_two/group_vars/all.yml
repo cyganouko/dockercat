@@ -1,0 +1,17 @@
+---
+# GitHub repository configuration
+github_repo: "https://github.com/cyganouko/dockercat.git"
+github_branch: "master"
+
+# Application configuration
+app_name: "dockercat"
+app_directory: "/opt/dockercat"
+
+# Docker Compose configuration
+docker_compose_command: "docker compose"
+docker_compose_file: "docker-compose.yml"
+
+# Application ports
+frontend_port: 3000
+backend_port: 5000
+mongodb_port: 27017

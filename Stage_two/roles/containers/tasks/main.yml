@@ -1,0 +1,27 @@
+---
+- name: Deploy Dockercat containers
+  block:
+    - name: Build and start Dockercat services
+      ansible.builtin.command:
+        cmd: "{{ docker_compose_command }} -f {{ docker_compose_file }} up -d --build"
+        chdir: "{{ app_directory }}"
+      register: compose_result
+      changed_when: true
+
+    - name: Wait for backend API
+      ansible.builtin.uri:
+        url: "http://localhost:{{ backend_port }}/api/products"
+        method: GET
+        status_code: 200
+      register: backend_health
+      retries: 12
+      delay: 5
+      until: backend_health.status == 200
+
+    - name: Display container deployment result
+      ansible.builtin.debug:
+        var: compose_result.stdout_lines
+
+  tags:
+    - containers
+    - deploy
